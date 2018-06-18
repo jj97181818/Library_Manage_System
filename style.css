@@ -1,0 +1,91 @@
+*{  /*所有還原預設值 */
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #faf29b;
+    color: #191919;
+    font-size: 20px;
+}
+
+a {
+    color: #191919;
+    text-decoration: none; /*取消底線*/
+}
+
+a:hover {
+    color: #ff785a;
+    text-decoration: none; /*取消底線*/
+}
+
+#top {
+    font-size: 45px;
+    text-align: center;
+    height: 90px;
+    color: #191919;
+    font-family: 'Jua', sans-serif;
+}
+
+#menu {
+    width: 800px; /*總寬度（menu）要等於主選單的寬度*主選單的數目*/
+    margin: auto;
+    height: 200px;
+    font-family: 'Jua', sans-serif;
+}
+
+#content {
+    clear: left; /*關掉 float: left; */
+    height: 500px;
+    text-align: left;
+}
+
+.main {
+    background-color: #ffaa5a;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;/* 把行高（line-height）設成和外框的高度（height）就可以達到垂直置中 */
+    width: 200px;
+}
+
+.main:hover {
+    background-color: #ff785a;
+}
+
+.sub {
+    background-color: #ffd25a;
+    color: #191919;
+    text-align: center;
+    width: 200px;
+    font-size: 20px;
+    line-height: 35px; 
+    padding: 5px;
+}
+
+.sub li {
+    list-style-type: none;  /*設定前面標點的類型*/
+    line-height: 35px; 
+    border-bottom: 1px solid #fff05a;
+}
+
+.item {
+    float: left; /*將垂直的表單改成水平的*/
+}
+
+.back {
+    background: #faf29b;
+}
+
+.text {
+    color: #ff5934;
+    font-size: 20px;
+}
+
+button {
+    width:70px;
+    background-color:#ff785a; 
+    color: white;
+}
