@@ -96,8 +96,8 @@
                     <div class="col-lg-4 back">
                         <form method="POST" action="return.php">
                             <p>條碼號：<input type="text" name="barcode"></p>
-                            <p>歸還日期：<input type="date" name="rdate"></p>
-                            <button type="submit">新增</button>
+                            <!-- <p>歸還日期：<input type="date" name="rdate"></p> -->
+                            <button type="submit">還書</button>
                         </form>
                         <?php
                             require_once 'login.php';
@@ -105,15 +105,14 @@
                             $query = ("SET NAMES utf8");
                             if ($conn->connect_error) die($conn->connect_error);
 
-                            if (isset($_POST['barcode']) && isset($_POST['rdate'])) {  #如果欄位都有填
+                            if (isset($_POST['barcode'])) {  #如果欄位都有填
                                 $barcode = get_post($conn, 'barcode');
-                                $rdate = get_post($conn, 'rdate');
                                     
                                 $query = "SELECT Status FROM BOOK WHERE Barcode = '$barcode'";
                                 $result = $conn->query($query);
 
                                 if(!$result->fetch_assoc()['Status']){  #書有順利借出過
-                                    $query = "INSERT INTO TURN (barcode, rdate) VALUES ('$barcode', '$rdate')";
+                                    $query = "INSERT INTO TURN (barcode) VALUES ('$barcode')";
                                     $result = $conn->query($query);
                                     $query = "UPDATE BOOK SET Status = 1 WHERE barcode = '$barcode'";
                                     $result = $conn->query($query);

@@ -97,8 +97,8 @@
                         <form method="POST" action="borrow.php">
                             <p>條碼號：<input type="text" name="barcode"></p>
                             <p>讀者編號：<input type="text" name="sid"></p>
-                            <p>借閱日期：<input type="date" name="bdate"></p>
-                            <button type="submit">新增</button>
+                            <!-- <p>借閱日期：<input type="date" name="bdate"></p> -->
+                            <button type="submit">借書</button>
                         </form>
                         <?php
                             require_once 'login.php';
@@ -106,16 +106,15 @@
                             $query = ("SET NAMES utf8");
                             if ($conn->connect_error) die($conn->connect_error);
 
-                            if (isset($_POST['barcode']) && isset($_POST['sid']) && isset($_POST['bdate'])) {  #如果欄位都有填
+                            if (isset($_POST['barcode']) && isset($_POST['sid'])) {  #如果欄位都有填
                                 $barcode = get_post($conn, 'barcode');
                                 $sid = get_post($conn, 'sid');
-                                $bdate = get_post($conn, 'bdate');
 
                                 $query  = "SELECT Status FROM BOOK WHERE Barcode = '$barcode' "; #搜尋那本書的狀態
                                 $result = $conn->query($query);
 
                                 if ($result->fetch_assoc()['Status']) {     #書還沒被借出去(1)
-                                    $query = "INSERT INTO BORROW (barcode, sid, bdate) VALUES ('$barcode', '$sid', '$bdate')";
+                                    $query = "INSERT INTO BORROW (barcode, sid) VALUES ('$barcode', '$sid')";
                                     $result = $conn->query($query);
                                     $query = "UPDATE BOOK SET Status = 0 WHERE barcode = '$barcode'";  #讓書顯示已外借(0)
                                     $result = $conn->query($query);
