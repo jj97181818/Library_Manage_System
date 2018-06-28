@@ -97,7 +97,7 @@
                         <form method="POST" action="borrow.php">
                             <p>條碼號：<input type="text" name="barcode"></p>
                             <p>讀者編號：<input type="text" name="sid"></p>
-                            <!-- <p>借閱日期：<input type="date" name="bdate"></p> -->
+                            <p>借閱日期：<input type="date" name="bdate"></p>
                             <button type="submit">借書</button>
                         </form>
                         <?php
@@ -109,6 +109,7 @@
                             if (isset($_POST['barcode']) && isset($_POST['sid'])) {  #如果欄位都有填
                                 $barcode = get_post($conn, 'barcode');
                                 $sid = get_post($conn, 'sid');
+                                $bdate = get_post($conn, 'bdate');
 
                                 $query  = "SELECT Status FROM BOOK WHERE Barcode = '$barcode' "; #搜尋那本書的狀態
                                 $result = $conn->query($query);
@@ -126,11 +127,15 @@
                                 }
                                 else {
                                     if ($result->fetch_assoc()['Status']) {     #書還沒被借出去(1)
-                                        $query = "INSERT INTO BORROW (barcode, sid) VALUES ('$barcode', '$sid')";
+                                        $query = "INSERT INTO BORROW (barcode, sid, bdate) VALUES ('$barcode', '$sid', '$bdate')";
                                         $result = $conn->query($query);
                                         $query = "UPDATE BOOK SET Status = 0 WHERE barcode = '$barcode'";  #讓書顯示已外借(0)
                                         $result = $conn->query($query);
-                                        echo "借書成功！";
+                                        echo "借書成功！<br>";
+                                        $query = "SELECT date(date_add(`Bdate`, interval 30 day)) as day FROM BORROW WHERE barcode = '$barcode' AND Turn = 0";
+                                        $result = $conn->query($query);
+                                        $result->data_seek(0);
+                                        echo "到期日： " . $result->fetch_assoc()['day'];
                                     }
                                     else {    #書被借出去了(0)
                                         echo "借書失敗，此書已被外借！";

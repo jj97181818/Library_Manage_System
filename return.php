@@ -96,7 +96,7 @@
                     <div class="col-lg-4 back">
                         <form method="POST" action="return.php">
                             <p>條碼號：<input type="text" name="barcode"></p>
-                            <!-- <p>歸還日期：<input type="date" name="rdate"></p> -->
+                            <!-- <p>歸還日期：<input type="date" name="rdate"></p>  -->
                             <button type="submit">還書</button>
                         </form>
                         <?php
@@ -107,17 +107,30 @@
 
                             if (isset($_POST['barcode'])) {  #如果欄位都有填
                                 $barcode = get_post($conn, 'barcode');
-                                    
+
                                 $query = "SELECT Status FROM BOOK WHERE Barcode = '$barcode'";
                                 $result = $conn->query($query);
 
                                 if(!$result->fetch_assoc()['Status']){  #書有順利借出過
-                                    $query = "INSERT INTO TURN (barcode) VALUES ('$barcode')";
+                                    $query = "INSERT INTO TURN (barcode) VALUES ('$barcode')"; #做歸還紀錄
                                     $result = $conn->query($query);
-                                    $query = "UPDATE BOOK SET Status = 1 WHERE barcode = '$barcode'";
+                                    $query = "UPDATE BOOK SET Status = 1 WHERE barcode = '$barcode'";  #將書的狀態改為可借
                                     $result = $conn->query($query);
-                                    $query = "UPDATE BORROW SET Turn = 1 WHERE barcode = '$barcode' AND Turn = 0";
+                                    $query = "SELECT DATEDIFF(NOW(), `Bdate`) AS day FROM BORROW  WHERE barcode = 002131595 AND Turn = 0"; #取得總共借了幾天
+                                    $day = $conn->query($query);
+                                    $query = "SELECT Day FROM BORROW, STUDENT, LEVEL WHERE Turn = 0 AND 002131595 = BORROW.Barcode AND BORROW.SID = STUDENT.SID AND STUDENT.Lnum = LEVEL.Lnum"; #此讀者真正可借閱天數
+                                    $ruleday = $conn->query($query);
+                                    
+                                    if( (int)$day->fetch_assoc()['day'] > (int)$ruleday->fetch_assoc()['Day']) {
+                                        $day->data_seek(0);
+                                        $ruleday->data_seek(0);
+                                        $substraction = (int)$day->fetch_assoc()['day'] - (int)$ruleday->fetch_assoc()['Day'];
+                                        $money = $substraction * 5;
+                                        echo  "此讀者逾期 ". $substraction  ." 天，需要繳交罰款 ". $money ." 元。<br>" ;
+                                    }
+                                    $query = "UPDATE BORROW SET Turn = 1 WHERE barcode = '$barcode' AND Turn = 0"; #將 turn 標示為已還
                                     $result = $conn->query($query);
+
                                     echo "還書成功！";
                                 }
                                 else {  #書未順利借出，或是本來就沒有借
