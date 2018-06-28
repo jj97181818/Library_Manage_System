@@ -179,20 +179,30 @@
                         <?php
                             if (!$result) die($conn->error);
                             $rows = $result->num_rows;   #查詢結果的資料筆數
+                            echo "<br><table border=1>";
+                            echo "<tr class='head'>";
+                            echo "<td>員工編號" ."</td>";
+                            echo "<td>姓名" . "</td>"; 
+                            echo "<td>分機" . "</td>";
+                            echo "<td>組別" . "</td>";
+                            echo "<td>性別" . "</td>";
+                            echo "</tr>";    
                             for ($j = 0 ; $j < $rows ; ++$j)
                             {
-                                echo '<br>';
+                                echo "<tr>";
                                 $result->data_seek($j);
-                                echo '員工編號:&nbsp;&nbsp;&nbsp;&nbsp;' . $result->fetch_assoc()['EID']   . '<br>';
+                                echo "<td>" . $result->fetch_assoc()['EID'] ."</td>";
                                 $result->data_seek($j);
-                                echo '姓名:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $result->fetch_assoc()['Ename']     . '<br>'; #關聯陣列，只能用 $row[$colname] 存取
+                                echo "<td>" . $result->fetch_assoc()['Ename'] ."</td>"; #關聯陣列，只能用 $row[$colname] 存取
                                 $result->data_seek($j);
-                                echo '分機:&nbsp;&nbsp;&nbsp;' . $result->fetch_assoc()['Extension']      . '<br>';
+                                echo "<td>" . $result->fetch_assoc()['Extension'] ."</td>";
                                 $result->data_seek($j);
-                                echo '組別: ' . $result->fetch_assoc()['Dnum']       . '<br>';
+                                echo "<td>" . $result->fetch_assoc()['Dnum'] ."</td>";
                                 $result->data_seek($j);
-                                echo '性別: ' . $result->fetch_assoc()['Sex']       . '<br>';
+                                echo "<td>" . $result->fetch_assoc()['Sex'] ."</td>";
+                                echo "</tr>";
                             }
+                            echo "</table><br><br>";
                             $result->close();
                             $conn->close();
                             

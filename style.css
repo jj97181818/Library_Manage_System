@@ -89,3 +89,17 @@ button {
     background-color:#ff785a; 
     color: white;
 }
+
+table, tr, td {
+    text-align: center;
+    /* border: 2px solid black; */
+    border-collapse: collapse;
+}
+tr, td {
+    padding: 20px;
+    color: rgb(58, 109, 133);
+}
+.head {
+    font-weight: 800;
+    font-size: 20px;
+}

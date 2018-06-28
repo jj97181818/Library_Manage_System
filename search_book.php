@@ -164,24 +164,34 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-3"></div>
-                    <div class="col-lg-6 back">
+                    <div class="col-lg-7 back">
                         <?php
                             if (!$result) die($conn->error);
                             $rows = $result->num_rows;   #查詢結果的資料筆數
+                            echo "<br><table border=1>";
+                            echo "<tr class='head'>";
+                            echo "<td>書名" ."</td>";
+                            echo "<td>條碼" . "</td>"; 
+                            echo "<td>索書號" . "</td>";
+                            echo "<td>所在樓層" . "</td>";
+                            echo "<td>借閱狀態" . "</td>";
+                            echo "</tr>";    
                             for ($j = 0 ; $j < $rows ; ++$j)
                             {
-                                echo '<br>';
+                                echo "<tr>";
                                 $result->data_seek($j);
-                                echo '書名:&nbsp;&nbsp;&nbsp;&nbsp;' . $result->fetch_assoc()['Bname']   . '<br>';
+                                echo "<td>" . $result->fetch_assoc()['Bname'] ."</td>";
                                 $result->data_seek($j);
-                                echo '條碼:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $result->fetch_assoc()['Barcode']     . '<br>'; #關聯陣列，只能用 $row[$colname] 存取
+                                echo "<td>" . $result->fetch_assoc()['Barcode'] ."</td>"; #關聯陣列，只能用 $row[$colname] 存取
                                 $result->data_seek($j);
-                                echo '索書號:&nbsp;&nbsp;&nbsp;' . $result->fetch_assoc()['Callnum']      . '<br>';
+                                echo "<td>" . $result->fetch_assoc()['Callnum'] ."</td>";
                                 $result->data_seek($j);
-                                echo '所在樓層: ' . $result->fetch_assoc()['Floor']       . '<br>';
+                                echo "<td>" . $result->fetch_assoc()['Floor'] ."</td>";
                                 $result->data_seek($j);
-                                echo '借閱狀態: ' . $result->fetch_assoc()['Status']       . '<br><br>';
+                                echo "<td>" . $result->fetch_assoc()['Status'] ."</td>";
+                                echo "</tr>";
                             }
+                            echo "</table><br><br>";
                             $result->close();
                             $conn->close();
                             
@@ -190,7 +200,7 @@
                             }
                         ?>
                     </div>
-                    <div class="col-lg-3"></div>
+                    <div class="col-lg-2"></div>
                 </div>
             </div>
         </div>

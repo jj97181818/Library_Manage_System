@@ -94,7 +94,7 @@
                 <div class="row">
                     <div class="col-lg-4"></div>
                     <div class="col-lg-4 back">
-                        <form method="POST" action="library5.php">
+                        <form method="POST" action="log_book.php">
                             <p>條碼號：<input type="text" name="barcode"></p>
                             <p>索書號：<input type="text" name="callnum"></p>
                             <p>書名：<input type="text" name="bname"></p>
