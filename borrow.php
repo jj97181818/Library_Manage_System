@@ -112,16 +112,29 @@
 
                                 $query  = "SELECT Status FROM BOOK WHERE Barcode = '$barcode' "; #搜尋那本書的狀態
                                 $result = $conn->query($query);
+                                
+                                $querya = "SELECT Borrow_num FROM STUDENT, LEVEL WHERE '$sid'= STUDENT.SID AND STUDENT.Lnum = LEVEL.Lnum";   //搜尋這個人總共可以借幾本書
+                                $max = $conn->query($querya);
+                                
+                                
+                                $queryb = "SELECT COUNT(*) FROM BORROW WHERE SID = '$sid' AND Turn = 0"; //這個人已經借了幾本書
+                                $num = $conn->query($queryb);
+                                
 
-                                if ($result->fetch_assoc()['Status']) {     #書還沒被借出去(1)
-                                    $query = "INSERT INTO BORROW (barcode, sid) VALUES ('$barcode', '$sid')";
-                                    $result = $conn->query($query);
-                                    $query = "UPDATE BOOK SET Status = 0 WHERE barcode = '$barcode'";  #讓書顯示已外借(0)
-                                    $result = $conn->query($query);
-                                    echo "借書成功！";
+                                if((int)$max->fetch_assoc()['Borrow_num'] == (int)$num->fetch_assoc()['COUNT(*)']){ //此人借書已到上限，不能再借書
+                                    echo "已到達借書上限！不能再借。";
                                 }
-                                else {    #書被借出去了(0)
-                                    echo "借書失敗，此書已被外借！";
+                                else {
+                                    if ($result->fetch_assoc()['Status']) {     #書還沒被借出去(1)
+                                        $query = "INSERT INTO BORROW (barcode, sid) VALUES ('$barcode', '$sid')";
+                                        $result = $conn->query($query);
+                                        $query = "UPDATE BOOK SET Status = 0 WHERE barcode = '$barcode'";  #讓書顯示已外借(0)
+                                        $result = $conn->query($query);
+                                        echo "借書成功！";
+                                    }
+                                    else {    #書被借出去了(0)
+                                        echo "借書失敗，此書已被外借！";
+                                    }
                                 }
                                 if (!$result) echo "INSERT failed : $query <br>" . $conn->error . "<br><br>";
                             }

@@ -116,6 +116,8 @@
                                     $result = $conn->query($query);
                                     $query = "UPDATE BOOK SET Status = 1 WHERE barcode = '$barcode'";
                                     $result = $conn->query($query);
+                                    $query = "UPDATE BORROW SET Turn = 1 WHERE barcode = '$barcode' AND Turn = 0";
+                                    $result = $conn->query($query);
                                     echo "還書成功！";
                                 }
                                 else {  #書未順利借出，或是本來就沒有借
