@@ -105,9 +105,9 @@
                 <div class="row">
                     <div class="col-lg-4"></div>
                     <div class="col-lg-4 back">
-                        <p>請選擇要查詢的類型：</p>
-                        <form method="POST" action="search_student.php">
-                            <p><input type=radio value="1" name="check" checked> 讀者編號：<input type="text" name="SID"></p>
+                        <p>請選擇讀者編號與要修改的類型：</p>
+                        <form method="POST" action="modify_student.php">
+                            <p> 讀者編號：<input type="text" name="SID"></p>
                             <p><input type=radio value="2" name="check"> 姓名：<input type="text" name="sname"></p>
                             <p><input type=radio value="3" name="check"> 科系：<input type="text" name="sdepartment"></p>
                             <p><input type=radio value="4" name="check"> 年級：<input type="text" name="grade"></p>
@@ -132,18 +132,10 @@
                             // }
                             
                             if(isset($_POST['check'])) {
-                                if(!strcmp($_POST['check'], "1")) {
-                                    if ($_POST['SID']) {
-                                        $query  = "SELECT * FROM STUDENT WHERE SID = '$SID'";
-                                        $result = $conn->query($query);
-                                    }
-                                    else{
-                                        echo "請輸入讀者編號！";
-                                    }
-                                }
-                                else if(!strcmp($_POST['check'], "2")) {
+                                
+                                if(!strcmp($_POST['check'], "2")) {
                                     if ($_POST['sname']) {
-                                        $query  = "SELECT * FROM STUDENT WHERE Sname like '%$sname%'";
+                                        $query  = "UPDATE STUDENT SET Sname = '$sname'  WHERE SID = '$SID'";
                                         $result = $conn->query($query);
                                     }
                                     else{
@@ -152,7 +144,7 @@
                                 }
                                 else if(!strcmp($_POST['check'], "3")) {
                                     if ($_POST['sdepartment']) {
-                                        $query  = "SELECT * FROM STUDENT WHERE Sdepartment = '$sdepartment'";
+                                        $query  = "UPDATE STUDENT SET Sdepartment = '$sdepartment'  WHERE  SID = '$SID'";
                                         $result = $conn->query($query);
                                     }
                                     else{
@@ -161,7 +153,7 @@
                                 }
                                 else if(!strcmp($_POST['check'], "4")) {
                                     if ($_POST['grade']) {
-                                        $query  = "SELECT * FROM STUDENT WHERE Grade = '$grade'";
+                                        $query  = "UPDATE STUDENT SET Grade = '$grade'  WHERE  SID = '$SID' ";
                                         $result = $conn->query($query);
                                     }
                                     else{
@@ -170,7 +162,7 @@
                                 }
                                 else {
                                     if ($_POST['sex']) {
-                                        $query  = "SELECT * FROM STUDENT WHERE Sex = '$sex'";
+                                        $query  = "UPDATE STUDENT SET Sex = '$sex'  WHERE  SID = '$SID' ";
                                         $result = $conn->query($query);
                                     }
                                     else{

@@ -10,8 +10,8 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>
             $(document).ready(function() {
-                var oldtext=['關於圖書館','借還書服務','資料登錄','搜尋']
-                var newtext = ['About', 'Book', 'Log', 'Search']
+                var oldtext=['關於圖書館', '借還書服務', '資料登錄', '資料修改', '搜尋']
+                var newtext = ['About', 'Book', 'Log', 'Modify', 'Search']
             
                 //  讓 #menu 的寬度自動根據 main 的數量而變
                 //$("#menu").css("width", $(".main").length * 100)
@@ -73,6 +73,17 @@
                         <li><a href="log_student.php">學生</a></li>
                         <li><a href="log_employee.php">員工</a></li>
                         <li><a href="log_book.php">書籍</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="item">
+                <div class="main">資料修改</div>
+                <div class="sub">
+                    <ul>
+                        <li><a href="modify_student.php">學生</a></li>
+                        <li><a href="modify_employee.php">員工</a></li>
+                        <li><a href="modify_book.php">書籍</a></li>
                     </ul>
                 </div>
             </div>

@@ -105,13 +105,12 @@
                 <div class="row">
                     <div class="col-lg-4"></div>
                     <div class="col-lg-4 back">
-                        <p>請選擇要查詢的類型：</p>
-                        <form method="POST" action="search_student.php">
-                            <p><input type=radio value="1" name="check" checked> 讀者編號：<input type="text" name="SID"></p>
-                            <p><input type=radio value="2" name="check"> 姓名：<input type="text" name="sname"></p>
-                            <p><input type=radio value="3" name="check"> 科系：<input type="text" name="sdepartment"></p>
-                            <p><input type=radio value="4" name="check"> 年級：<input type="text" name="grade"></p>
-                            <p><input type=radio value="5" name="check"> 性別：<input type="text" name="sex"></p>
+                        <p>請選擇條碼號與要修改的類型：</p>
+                        <form method="POST" action="modify_book.php">
+                            <p>條碼號：<input type="text" name="barcode"></p>
+                            <p><input type=radio value="2" name="check"> 索書號：<input type="text" name="callnum"></p>
+                            <p><input type=radio value="3" name="check" checked> 書名：<input type="text" name="bname"></p>
+                            <p><input type=radio value="4" name="check"> 樓層：<input type="text" name="floor"></p>
                             <button type="submit">查詢</button>
                         </form>
                         <?php
@@ -120,64 +119,44 @@
                             if ($conn->connect_error) die($conn->connect_error);
                             $query = ("SET NAMES utf8");
 
-                            if (isset($_POST['SID']) || isset($_POST['sname']) || isset($_POST['sdepartment']) || isset($_POST['grade']) || isset($_POST['sex'])) { #如果4個欄位都有填
-                                $SID = get_post($conn, 'SID');
-                                $sname = get_post($conn, 'sname');
-                                $sdepartment = get_post($conn, 'sdepartment');
-                                $grade = get_post($conn, 'grade');
-                                $sex = get_post($conn, 'sex');
+                            if (isset($_POST['barcode']) || isset($_POST['callnum']) || isset($_POST['bname']) || isset($_POST['floor'])) { #如果4個欄位都有填
+                                $barcode = get_post($conn, 'barcode');
+                                $callnum = get_post($conn, 'callnum');
+                                $bname = get_post($conn, 'bname');
+                                $floor = get_post($conn, 'floor');
                             }
                             // else {
                             //     echo "請輸入查詢內容！";
                             // }
                             
-                            if(isset($_POST['check'])) {
-                                if(!strcmp($_POST['check'], "1")) {
-                                    if ($_POST['SID']) {
-                                        $query  = "SELECT * FROM STUDENT WHERE SID = '$SID'";
+                                if(!strcmp($_POST['check'], "2")) {
+                                    if ($_POST['callnum']) {
+                                        $query  = "UPDATE BOOK SET  Callnum = '$callnum'  WHERE Barcode = '$barcode'";
                                         $result = $conn->query($query);
                                     }
                                     else{
-                                        echo "請輸入讀者編號！";
-                                    }
-                                }
-                                else if(!strcmp($_POST['check'], "2")) {
-                                    if ($_POST['sname']) {
-                                        $query  = "SELECT * FROM STUDENT WHERE Sname like '%$sname%'";
-                                        $result = $conn->query($query);
-                                    }
-                                    else{
-                                        echo "請輸入姓名！";
+                                        echo "請輸入索書號！";
                                     }
                                 }
                                 else if(!strcmp($_POST['check'], "3")) {
-                                    if ($_POST['sdepartment']) {
-                                        $query  = "SELECT * FROM STUDENT WHERE Sdepartment = '$sdepartment'";
+                                    if ($_POST['bname']) {
+                                        $query  = "UPDATE BOOK SET  Bname = '$bname' WHERE Barcode = '$barcode'";
                                         $result = $conn->query($query);
                                     }
                                     else{
-                                        echo "請輸入科系！";
-                                    }
-                                }
-                                else if(!strcmp($_POST['check'], "4")) {
-                                    if ($_POST['grade']) {
-                                        $query  = "SELECT * FROM STUDENT WHERE Grade = '$grade'";
-                                        $result = $conn->query($query);
-                                    }
-                                    else{
-                                        echo "請輸入年級！";
+                                        echo "請輸入書名！";
                                     }
                                 }
                                 else {
-                                    if ($_POST['sex']) {
-                                        $query  = "SELECT * FROM STUDENT WHERE Sex = '$sex'";
+                                    if ($_POST['floor']) {
+                                        $query  = "UPDATE BOOK SET Floor = '$floor' WHERE Barcode = '$barcode' ";
                                         $result = $conn->query($query);
                                     }
                                     else{
-                                        echo "請輸入性別！";
+                                        echo "請輸入樓層！";
                                     }
                                 }
-                            }
+                            
                         ?>
                     </div>
                     <div class="col-lg-4"></div>
@@ -186,31 +165,31 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-3"></div>
-                    <div class="col-lg-6 back">
+                    <div class="col-lg-7 back">
                         <?php
                             if (!$result) die($conn->error);
                             $rows = $result->num_rows;   #查詢結果的資料筆數
                             echo "<br><table border=1>";
                             echo "<tr class='head'>";
-                            echo "<td>讀者編號" ."</td>";
-                            echo "<td>姓名" . "</td>"; 
-                            echo "<td>科系" . "</td>";
-                            echo "<td>年級" . "</td>";
-                            echo "<td>性別" . "</td>";
-                            echo "</tr>";   
+                            echo "<td>書名" ."</td>";
+                            echo "<td>條碼" . "</td>"; 
+                            echo "<td>索書號" . "</td>";
+                            echo "<td>所在樓層" . "</td>";
+                            echo "<td>借閱狀態" . "</td>";
+                            echo "</tr>";    
                             for ($j = 0 ; $j < $rows ; ++$j)
                             {
                                 echo "<tr>";
                                 $result->data_seek($j);
-                                echo "<td>" . $result->fetch_assoc()['SID'] ."</td>";
+                                echo "<td>" . $result->fetch_assoc()['Bname'] ."</td>";
                                 $result->data_seek($j);
-                                echo "<td>" . $result->fetch_assoc()['Sname'] ."</td>"; #關聯陣列，只能用 $row[$colname] 存取
+                                echo "<td>" . $result->fetch_assoc()['Barcode'] ."</td>"; #關聯陣列，只能用 $row[$colname] 存取
                                 $result->data_seek($j);
-                                echo "<td>" . $result->fetch_assoc()['Sdepartment'] ."</td>";
+                                echo "<td>" . $result->fetch_assoc()['Callnum'] ."</td>";
                                 $result->data_seek($j);
-                                echo "<td>" . $result->fetch_assoc()['Grade'] ."</td>";
+                                echo "<td>" . $result->fetch_assoc()['Floor'] ."</td>";
                                 $result->data_seek($j);
-                                echo "<td>" . $result->fetch_assoc()['Sex'] ."</td>";
+                                echo "<td>" . $result->fetch_assoc()['Status'] ."</td>";
                                 echo "</tr>";
                             }
                             echo "</table><br><br>";
@@ -222,7 +201,7 @@
                             }
                         ?>
                     </div>
-                    <div class="col-lg-3"></div>
+                    <div class="col-lg-2"></div>
                 </div>
             </div>
         </div>

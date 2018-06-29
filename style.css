@@ -28,7 +28,7 @@ a:hover {
 }
 
 #menu {
-    width: 800px; /*總寬度（menu）要等於主選單的寬度*主選單的數目*/
+    width: 1000px; /*總寬度（menu）要等於主選單的寬度*主選單的數目*/
     margin: auto;
     height: 200px;
     font-family: 'Jua', sans-serif;
@@ -90,6 +90,8 @@ button {
     color: white;
 }
 
+
+/*-----------beautify the tabel-----------*/
 table, tr, td {
     text-align: center;
     /* border: 2px solid black; */
